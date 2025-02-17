@@ -1,12 +1,19 @@
 import time
 import threading
 import subprocess
+import platform
+import os
+import sys
 ##################################
 class load:
    def __init__(self):
-      self.endLoadingScreen = False
+      if platform.system() == "Linux":
+         pass
+      else:
+         print("Exodus only works on Linux.")
+         sys.exit(1)
 
-      exec('subprocess.run(["clear"]); time.sleep(1)')
+      self.endLoadingScreen = False
 
       thread1 = threading.Thread(target=self.text)
       thread2 = threading.Thread(target=self.wheel)
@@ -18,10 +25,21 @@ class load:
       thread2.join()
       thread3.join()
 
+      self.logo()
+   ##################################
+   def wheel(self):
+         char = ["[|]", "[/]", "[-]", "[\\]"]
+         while self.endLoadingScreen == False:
+            for i in char:
+               print(i, end="\r")
+               time.sleep(0.3)
+   ##################################
+   def text(self):
+      print("    Starting Exodus, please wait...", end="\r")
+   ##################################
+   def logo(self):
       if self.endLoadingScreen == True:
-         subprocess.run(["clear"])
-         print("[|] Starting Exodus, please wait...")
-         time.sleep(1)
+         print("[|] Starting Exodus, please wait..."); time.sleep(1)
          print(" ____ __  _ ___  ___  __ __ ___")
          print("|  __|\ \/ /   \|   \|  |  / __|")
          print("|  _|  |  |  |  | |  |  |  \__ \\")
@@ -30,19 +48,10 @@ class load:
          print("|   By:        Lichen          |")
          print("|   Version:     Beta          |")
          print("+ ---------------------------- +")
-##################################
-   def wheel(self):
-         char = ["[|]", "[/]", "[-]", "[\\]"]
-         while self.endLoadingScreen == False:
-            for i in char:
-               print(i, end="\r")
-               time.sleep(0.3)
-##################################
-   def text(self):
-      print("    Starting Exodus, please wait...", end="\r")
-##################################
+   ##################################
    def do(self):
-      pass
       self.endLoadingScreen = True
+##################################
+
 
 load()
