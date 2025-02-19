@@ -2,7 +2,8 @@ import threading
 import time
 import subprocess
 import platform
-####################################
+
+
 
 class loadingScreen:
    def __init__(self):
@@ -20,7 +21,7 @@ class loadingScreen:
 
       if self.load_logo == True:
          self.loadLogo()
-   ####################################
+
    def loadingText(self, thread1_stop):
       while not self.thread1_stop.is_set():
          frames = ["[|] Loading Exodus, please be patient...", "[/] Loading Exodus, please be patient...", "[-] Loading Exodus, please be patient...", "[\\] Loading Exodus, please be patient..."]
@@ -29,7 +30,7 @@ class loadingScreen:
             time.sleep(0.5)
       else:
          return
-   ####################################
+
    def do_task(self, thread2_stop):
       result = subprocess.run(["ping", "-c", "1", "google.com"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
       if result.returncode == 0:
@@ -40,7 +41,7 @@ class loadingScreen:
          self.ping_status = False
          self.load_logo = True
          self.thread1_stop.set()
-   ####################################
+
    def reportError(self, text):
       print(f"\n➥ An error occured: '{text}'.")
       self.load_logo = False
@@ -53,7 +54,7 @@ class loadingScreen:
          self.thread2_stop.set()
       else:
          pass
-   ####################################
+
    def loadLogo(self):
       print("\n ____ __  _ ___  ___  __ __ ___")
       print("|  __|\ \/ /   \|   \|  |  / __|")
@@ -75,6 +76,12 @@ class loadingScreen:
 class program_launcher:
    def __init__(self):
       pass
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
