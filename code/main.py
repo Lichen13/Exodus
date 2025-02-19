@@ -3,8 +3,8 @@ import time
 import subprocess
 import platform
 ####################################
+
 class loadingScreen:
-   ####################################
    def __init__(self):
       self.thread1_stop = threading.Event()
       self.thread2_stop = threading.Event()
@@ -67,6 +67,15 @@ class loadingScreen:
       else:
          print("|  Ping:      Negative         |")
       print("+ ---------------------------- +")
+      print("[1] ChestGuard           Password saver")
+      print("[2] Tool2                Another tool")
+
+
+
+class program_launcher:
+   def __init__(self):
+      pass
+
 
 if __name__ == "__main__":
    if platform.system() == "Linux":
