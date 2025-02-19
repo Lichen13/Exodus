@@ -1,17 +1,16 @@
+import threading
 import time
 import subprocess
-import sys
 import platform
-import threading
 ####################################
 class loadingScreen:
    ####################################
    def __init__(self):
-      self.loadLogo = False
-      self.connected = False
+      self.thread1_stop = threading.Event()
+      self.thread2_stop = threading.Event()
 
-      thread1 = threading.Thread(target=self.loadingText)
-      thread2 = threading.Thread(target=self.do_task)
+      thread1 = threading.Thread(target=self.loadingText, args=(self.thread1_stop,))
+      thread2 = threading.Thread(target=self.do_task, args=(self.thread2_stop,))
 
       thread1.start()
       thread2.start()
@@ -19,53 +18,58 @@ class loadingScreen:
       thread1.join()
       thread2.join()
 
-      self.logo()
+      if self.load_logo == True:
+         self.loadLogo()
    ####################################
-   def loadingText(self):
-      while self.loadLogo != True:
-         subprocess.run(["clear"])
-         print("")
-         text = ["[|] Loading Exodus, please be patient...", "[/] Loading Exodus, please be patient...", "[-] Loading Exodus, please be patient...", "[\\] Loading Exodus, please be patient..."]
-         for i in text:
-            print(i, end="\r", flush=True)
-            time.sleep(1)
-   ####################################
-   def reportError(self, description):
-      print(f"\n ➥  An error occured: '{description}'.")
-      sys.exit(1)
-   ####################################
-   def logo(self):
-       self.line1 = "| By: Lichen                   |"
-       self.line2 = "| Version: Beta                |"
-       if self.connected == True:
-          self.line3 = "| Ping: Positive               |"
-       else:
-          self.line3 = "| Ping: Negative               |"
-       if self.loadLogo == True:
-          print("[|] Loading Exodus, please be patient...")
-          print(" ____ __  _ ___  ___  __ __ ___")
-          print("|  __|\ \/ /   \|   \|  |  / __|")
-          print("|  _|  |  |  |  | |  |  |  \__ \\")
-          print("|____|/_/\_\___/|___/ \___/|___/")
-          print("+ ---------------------------- +")
-          print(self.line1)
-          print(self.line2)
-          print(self.line3)
-          print("+ ---------------------------- +")
-   ####################################
-   def do_task(self):
-      time.sleep(1)
-      osname = platform.system()
-      if osname == "Linu":
-         pass
+   def loadingText(self, thread1_stop):
+      while not self.thread1_stop.is_set():
+         frames = ["[|] Loading Exodus, please be patient...", "[/] Loading Exodus, please be patient...", "[-] Loading Exodus, please be patient...", "[\\] Loading Exodus, please be patient..."]
+         for i in frames:
+            print(i, end="\r")
+            time.sleep(0.5)
       else:
-         self.reportError("Exodus is only working for Linux")
-      try:
-         result = subprocess.run(["ping", "-c", "1", "google.com"], timeout=5, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-         self.connected = True
-         self.loadLogo = True
-      except subprocess.TimeoutExpired as e:
-         self.connected = False
-         self.loadLogo = True
+         return
+   ####################################
+   def do_task(self, thread2_stop):
+      result = subprocess.run(["ping", "-c", "1", "google.com"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+      if result.returncode == 0:
+         self.ping_status = True
+         self.load_logo = True
+         self.thread1_stop.set()
+      else:
+         self.ping_status = False
+         self.load_logo = True
+         self.thread1_stop.set()
+   ####################################
+   def reportError(self, text):
+      print(f"\n➥ An error occured: '{text}'.")
+      self.load_logo = False
+      if not self.thread1_stop.is_set():
+         self.thread1_stop.set()
+      else:
+         pass
 
-loadingScreen()
+      if not self.thread2_stop.is_set():
+         self.thread2_stop.set()
+      else:
+         pass
+   ####################################
+   def loadLogo(self):
+      print("\n ____ __  _ ___  ___  __ __ ___")
+      print("|  __|\ \/ /   \|   \|  |  / __|")
+      print("|  _|  |  |  |  | |  |  |  \__ \\")
+      print("|____|/_/\_\___/|___/ \___/|___/")
+      print("+ ---------------------------- +")
+      print("|  By:        Lichen           |")
+      print("|  Version:   Beta             |")
+      if self.ping_status == True:
+         print("|  Ping:      Positive         |")
+      else:
+         print("|  Ping:      Negative         |")
+      print("+ ---------------------------- +")
+
+if __name__ == "__main__":
+   if platform.system() == "Linux":
+      loadingScreen()
+   else:
+      print("Exodus is only working for Linux.")
