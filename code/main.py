@@ -7,6 +7,7 @@ import platform
 
 class loadingScreen:
    def __init__(self):
+      subprocess.run(["clear"])
       self.thread1_stop = threading.Event()
       self.thread2_stop = threading.Event()
 
@@ -56,32 +57,32 @@ class loadingScreen:
          pass
 
    def loadLogo(self):
-      print("\n ____ __  _ ___  ___  __ __ ___")
-      print("|  __|\ \/ /   \|   \|  |  / __|")
-      print("|  _|  |  |  |  | |  |  |  \__ \\")
-      print("|____|/_/\_\___/|___/ \___/|___/")
-      print("+ ---------------------------- +")
-      print("|  By:        Lichen           |")
-      print("|  Version:   Beta             |")
-      if self.ping_status == True:
-         print("|  Ping:      Positive         |")
-      else:
-         print("|  Ping:      Negative         |")
-      print("+ ---------------------------- +")
-      print("[1] ChestGuard           Password saver")
-      print("[2] Tool2                Another tool")
+      while True:
+         print("\n ____ __  _ ___  ___  __ __ ___")
+         print("|  __|\ \/ /   \|   \|  |  / __|")
+         print("|  _|  |  |  |  | |  |  |  \__ \\")
+         print("|____|/_/\_\___/|___/ \___/|___/")
+         print("+ ---------------------------- +")
+         print("|  By:        Lichen           |")
+         print("|  Version:   Beta             |")
+         if self.ping_status == True:
+            print("|  Ping:      Positive         |")
+         else:
+            print("|  Ping:      Negative         |")
+         print("+ ---------------------------- +")
+         print("[1] ChestGuard           Password saver")
+         print("[2] Tool2                Another tool")
 
+         cmd_input = input("Run: ")
+         if cmd_input == "1":
+            program_launcher(1)
+         else:
+            self.reportError("Wrong option")
 
 
 class program_launcher:
-   def __init__(self):
-      pass
-
-
-
-
-
-
+   def __init__(self, pid):
+      print(pid)
 
 
 if __name__ == "__main__":
