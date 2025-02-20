@@ -2,9 +2,7 @@ import threading
 import time
 import subprocess
 import platform
-
-
-
+###############################################
 class loadingScreen:
    def __init__(self):
       subprocess.run(["clear"])
@@ -78,13 +76,11 @@ class loadingScreen:
             program_launcher(1)
          else:
             self.reportError("Wrong option")
-
-
+###############################################
 class program_launcher:
    def __init__(self, pid):
       print(pid)
-
-
+###############################################
 if __name__ == "__main__":
    if platform.system() == "Linux":
       loadingScreen()
