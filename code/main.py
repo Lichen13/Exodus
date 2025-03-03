@@ -2,10 +2,11 @@ import threading
 import time
 import subprocess
 import platform
-###############################################
+
 class loadingScreen:
    def __init__(self):
       subprocess.run(["clear"])
+      time.sleep(1)
       self.thread1_stop = threading.Event()
       self.thread2_stop = threading.Event()
 
@@ -57,9 +58,9 @@ class loadingScreen:
    def loadLogo(self):
       while True:
          print("\n ____ __  _ ___  ___  __ __ ___")
-         print("|  __|\ \/ /   \|   \|  |  / __|")
-         print("|  _|  |  |  |  | |  |  |  \__ \\")
-         print("|____|/_/\_\___/|___/ \___/|___/")
+         print("|  __|\\ \\/ /   \\|   \\|  |  / __|")
+         print("|  _|  |  |  |  | |  |  |  \\__ \\")
+         print("|____|/_/\\_\\___/|___/ \\___/|___/")
          print("+ ---------------------------- +")
          print("|  By:        Lichen           |")
          print("|  Version:   Beta             |")
