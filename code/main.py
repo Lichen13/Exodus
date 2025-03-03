@@ -6,7 +6,6 @@ import platform
 class loadingScreen:
    def __init__(self):
       subprocess.run(["clear"])
-      time.sleep(1)
       self.thread1_stop = threading.Event()
       self.thread2_stop = threading.Event()
 
@@ -21,18 +20,20 @@ class loadingScreen:
 
       if self.load_logo == True:
          self.loadLogo()
+      else:
+         return
 
    def loadingText(self, thread1_stop):
       while not self.thread1_stop.is_set():
          frames = ["[|] Loading Exodus, please be patient...", "[/] Loading Exodus, please be patient...", "[-] Loading Exodus, please be patient...", "[\\] Loading Exodus, please be patient..."]
+         
          for i in frames:
             print(i, end="\r")
             time.sleep(0.5)
-      else:
-         return
 
    def do_task(self, thread2_stop):
       result = subprocess.run(["ping", "-c", "1", "google.com"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
       if result.returncode == 0:
          self.ping_status = True
          self.load_logo = True
@@ -45,6 +46,7 @@ class loadingScreen:
    def reportError(self, text):
       print(f"\n➥ An error occured: '{text}'.")
       self.load_logo = False
+      
       if not self.thread1_stop.is_set():
          self.thread1_stop.set()
       else:
@@ -64,26 +66,29 @@ class loadingScreen:
          print("+ ---------------------------- +")
          print("|  By:        Lichen           |")
          print("|  Version:   Beta             |")
+         
          if self.ping_status == True:
             print("|  Ping:      Positive         |")
          else:
             print("|  Ping:      Negative         |")
+         
          print("+ ---------------------------- +")
          print("[1] ChestGuard           Password saver")
          print("[2] Tool2                Another tool")
-
          cmd_input = input("Run: ")
+         
          if cmd_input == "1":
             program_launcher(1)
          else:
             self.reportError("Wrong option")
-###############################################
+
 class program_launcher:
    def __init__(self, pid):
       print(pid)
-###############################################
+
 if __name__ == "__main__":
    if platform.system() == "Linux":
       loadingScreen()
    else:
-      print("Exodus is only working for Linux.")
+      print("\n➥ An error occured: Exodus is only working for Linux\n")
+      time.sleep(1)
