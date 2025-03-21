@@ -9,14 +9,6 @@ def verify_module_installation(module):
         print(f"Module '{module}' is not working. Is he installed?")
         sys.exit(1)
 
-verify_module_installation("mysql.connector")
-verify_module_installation("git")
-verify_module_installation("os")
-
-import mysql.connector
-import git
-import os
-
 def clone_repo(repo_url):
     print(f"Cloning repo '{repo_url}'...")
     try:
@@ -25,4 +17,5 @@ def clone_repo(repo_url):
     except Exception as e:
         print(f"Error while cloning repo '{repo_url}'.\n{e}")
 
-clone_repo("https://github.com/Lichen13/Exodus")
+print("[ E X O D U S   A S S I S T A N T ]")
+print("[1] Install Exodus")
